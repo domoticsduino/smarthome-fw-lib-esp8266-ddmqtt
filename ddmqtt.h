@@ -1,4 +1,4 @@
-/* 1.0.0 VERSION */
+/* 1.1.0 VERSION */
 
 #ifndef ddmqtt_h
 #define ddmqtt_h
@@ -27,8 +27,8 @@ public:
 	DDMqtt(const char *, const char *, int, const char *, const char *, const char *, int, int);
 
 	void loop();
-	void reconnectMQTT();
-	void sendMessage(const char *, String);
+	void reconnectMQTT(unsigned long *);
+	void sendMessage(const char *, String, unsigned long *);
 	void setSubscribeCallback(MQTT_CALLBACK_SIGNATURE);
 };
 

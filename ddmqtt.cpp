@@ -1,4 +1,4 @@
-/* 1.0.0 VERSION */
+/* 1.1.0 VERSION */
 
 #include "ddmqtt.h"
 #include "ddcommon.h"
@@ -17,7 +17,7 @@ DDMqtt::DDMqtt(const char *deviceName, const char *mqttHost, int mqttPort, const
 	this->_clientMqtt.setBufferSize(this->mqtt_max_packet_size);
 }
 
-void DDMqtt::reconnectMQTT()
+void DDMqtt::reconnectMQTT(unsigned long *startMillis)
 {
 
 	writeToSerial("Reconnecting...", true);
@@ -68,7 +68,7 @@ void DDMqtt::reconnectMQTT()
 			digitalWrite(this->_ledStatusPin, LOW);
 		}
 
-		delay(5000);
+		myDelay(5000, startMillis);
 	}
 
 	digitalWrite(this->_ledStatusPin, HIGH);
@@ -80,7 +80,7 @@ void DDMqtt::loop()
 	this->_clientMqtt.loop();
 }
 
-void DDMqtt::sendMessage(const char *topic, String val)
+void DDMqtt::sendMessage(const char *topic, String val, unsigned long *startMillis)
 {
 
 	//String outBuf = String(val);
@@ -93,7 +93,7 @@ void DDMqtt::sendMessage(const char *topic, String val)
 	if (!this->_clientMqtt.connected())
 	{
 		writeToSerial("#2 MQTT not connected. Retrying... ", true);
-		this->reconnectMQTT();
+		this->reconnectMQTT(startMillis);
 	}
 
 	this->_clientMqtt.loop();
@@ -106,23 +106,21 @@ void DDMqtt::sendMessage(const char *topic, String val)
 	}
 	else
 	{
-
 		digitalWrite(this->_ledStatusPin, LOW);
-		delay(100);
+		myDelay(100, startMillis);
 		digitalWrite(this->_ledStatusPin, HIGH);
-		delay(100);
+		myDelay(100, startMillis);
 		digitalWrite(this->_ledStatusPin, LOW);
-		delay(100);
+		myDelay(100, startMillis);
 		digitalWrite(this->_ledStatusPin, HIGH);
-		delay(100);
+		myDelay(100, startMillis);
 		digitalWrite(this->_ledStatusPin, LOW);
-		delay(100);
+		myDelay(100, startMillis);
 		digitalWrite(this->_ledStatusPin, HIGH);
 	}
 }
 
 void DDMqtt::setSubscribeCallback(MQTT_CALLBACK_SIGNATURE)
 {
-
 	this->callback = callback;
 }
