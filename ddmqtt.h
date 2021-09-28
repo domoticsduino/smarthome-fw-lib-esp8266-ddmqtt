@@ -27,8 +27,8 @@ public:
 	DDMqtt(const char *, const char *, int, const char *, const char *, const char *, int, int);
 
 	void loop();
-	void reconnectMQTT(unsigned long *);
-	void sendMessage(const char *, String, unsigned long *);
+	void reconnectMQTT();
+	void sendMessage(const char *, String);
 	void setSubscribeCallback(MQTT_CALLBACK_SIGNATURE);
 };
 

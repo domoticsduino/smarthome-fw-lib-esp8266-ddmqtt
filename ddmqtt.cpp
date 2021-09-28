@@ -17,7 +17,7 @@ DDMqtt::DDMqtt(const char *deviceName, const char *mqttHost, int mqttPort, const
 	this->_clientMqtt.setBufferSize(this->mqtt_max_packet_size);
 }
 
-void DDMqtt::reconnectMQTT(unsigned long *startMillis)
+void DDMqtt::reconnectMQTT()
 {
 
 	writeToSerial("Reconnecting...", true);
@@ -68,7 +68,7 @@ void DDMqtt::reconnectMQTT(unsigned long *startMillis)
 			digitalWrite(this->_ledStatusPin, LOW);
 		}
 
-		myDelay(5000, startMillis);
+		delay(5000);
 	}
 
 	digitalWrite(this->_ledStatusPin, HIGH);
@@ -76,15 +76,11 @@ void DDMqtt::reconnectMQTT(unsigned long *startMillis)
 
 void DDMqtt::loop()
 {
-
 	this->_clientMqtt.loop();
 }
 
-void DDMqtt::sendMessage(const char *topic, String val, unsigned long *startMillis)
+void DDMqtt::sendMessage(const char *topic, String val)
 {
-
-	//String outBuf = String(val);
-
 	writeToSerial("Sending ", false);
 	writeToSerial(val, false);
 	writeToSerial(" to topic ", false);
@@ -93,7 +89,7 @@ void DDMqtt::sendMessage(const char *topic, String val, unsigned long *startMill
 	if (!this->_clientMqtt.connected())
 	{
 		writeToSerial("#2 MQTT not connected. Retrying... ", true);
-		this->reconnectMQTT(startMillis);
+		this->reconnectMQTT();
 	}
 
 	this->_clientMqtt.loop();
@@ -107,15 +103,15 @@ void DDMqtt::sendMessage(const char *topic, String val, unsigned long *startMill
 	else
 	{
 		digitalWrite(this->_ledStatusPin, LOW);
-		myDelay(100, startMillis);
+		delay(100);
 		digitalWrite(this->_ledStatusPin, HIGH);
-		myDelay(100, startMillis);
+		delay(100);
 		digitalWrite(this->_ledStatusPin, LOW);
-		myDelay(100, startMillis);
+		delay(100);
 		digitalWrite(this->_ledStatusPin, HIGH);
-		myDelay(100, startMillis);
+		delay(100);
 		digitalWrite(this->_ledStatusPin, LOW);
-		myDelay(100, startMillis);
+		delay(100);
 		digitalWrite(this->_ledStatusPin, HIGH);
 	}
 }
