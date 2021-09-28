@@ -1,4 +1,4 @@
-/* 1.1.0 VERSION */
+/* 1.2.0 VERSION */
 
 #ifndef ddmqtt_h
 #define ddmqtt_h
