@@ -21,7 +21,7 @@ private:
 	WiFiClient client;
 	PubSubClient _clientMqtt = PubSubClient(client);
 	int _ledStatusPin = -1;
-	uint16_t mqtt_max_packet_size = 512;
+	uint16_t mqtt_max_packet_size = 1024;
 
 public:
 	DDMqtt(const char *, const char *, int, const char *, const char *, const char *, int, int);
